@@ -9,6 +9,7 @@ const exitAfterFailure = 15; // seconds
 export class SocketConnection {
     private socket: WebSocket;
     private msgCount = 0;
+    public msgCallback = async (msg: any): Promise<void> => Promise.resolve();
 
     constructor() {
         this.socket = new WebSocket(getStreamsUrl(), options);
@@ -29,11 +30,9 @@ export class SocketConnection {
 
     private onMessage(data: WebSocket.RawData): void {
         const msg = JSON.parse(data.toString());
-        if (this.msgIsAnOkay(msg))
-            console.log(
-                `Subscribed to topic: ok\nWill print summary every ${reportMsgCountInterval} seconds`,
-            );
+        if (this.msgIsAnOkay(msg)) console.log(`Subscribed to topic: ok`);
         else {
+            this.msgCallback(msg.payload);
             this.msgCount++;
         }
     }
@@ -61,7 +60,7 @@ export class SocketConnection {
 
     private reportMsgCount(): void {
         console.log(
-            `Received ${this.msgCount} messages from streams in the last ${reportMsgCountInterval} seconds.`,
+            `Streams - Over the last ${reportMsgCountInterval} seconds: ${this.msgCount} messages received`,
         );
         this.msgCount = 0;
     }
