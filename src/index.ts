@@ -1,7 +1,12 @@
-import returnBen from './returnBen';
-import NumberGen from './NumberGen';
+// TODO
+// ✅ connect to streams! log messages
+// event hub boiler plate
+// forward streams messages
+// detailed logs, no longer log messages, log cleanup
+// test code for socket interactions / mocking event hub lib
 
-const gen = new NumberGen();
-const val = gen.getNum();
-console.log(returnBen());
-console.log('getNum Value:', val);
+// ✅  make sure pod restarts if websocket connection error
+
+import { SocketConnection } from './SocketConnection';
+
+new SocketConnection();
