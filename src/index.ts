@@ -1,18 +1,12 @@
-// TODO
-// ✅ connect to streams! log messages
-// ✅ event hub boiler plate
-// forward streams messages
-// ✅ detailed logs, no longer log messages, log cleanup
-
-// ✅  make sure pod restarts if websocket connection error
-// put streams url in k8s secret (add to teams wiki) + map it with the chart
-
 import { SocketConnection } from './SocketConnection';
 import { EventHub } from './EventHub';
+import { Logger } from './Logger';
+import { summarizeStatsInterval } from './configuration';
 
 const eventHub = new EventHub();
-const streamsConnection = new SocketConnection();
+const streams = new SocketConnection();
 
-streamsConnection.msgCallback = eventHub.sendToEventHub;
+streams.msgCallback = eventHub.sendToEventHub;
+streams.listen();
 
-streamsConnection.listen();
+setInterval(Logger.summarizeStats, summarizeStatsInterval * 1000);

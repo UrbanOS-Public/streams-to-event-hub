@@ -1,8 +1,8 @@
 import WebSocket from 'ws';
 import { getStreamsUrl, initial_topic_request } from './configuration';
+import { Logger } from './Logger';
 
 const options = { headers: { 'user-agent': 'node' } };
-const reportMsgCountInterval = 20; // seconds
 const keepAliveInterval = 5; // seconds
 const exitAfterFailure = 15; // seconds
 
@@ -24,21 +24,19 @@ export class SocketConnection {
         setInterval(() => {
             this.socket.ping('keep alive');
         }, keepAliveInterval * 1000);
-
-        setInterval(() => this.reportMsgCount(), reportMsgCountInterval * 1000);
     }
 
     private onMessage(data: WebSocket.RawData): void {
         const msg = JSON.parse(data.toString());
-        if (this.msgIsAnOkay(msg)) console.log(`Subscribed to topic: ok`);
+        if (this.msgIsAnOkay(msg)) Logger.streams(`Subscribed to topic: ok`);
         else {
             this.msgCallback(msg.payload);
-            this.msgCount++;
+            Logger.streamsMsgReceived();
         }
     }
 
     private onConnection(): void {
-        console.log('Connection established, subscribing to topic');
+        Logger.streams('Connection established: subscribing to topic');
         this.socket.send(JSON.stringify(initial_topic_request));
     }
 
@@ -47,8 +45,10 @@ export class SocketConnection {
     }
 
     private onClose(): void {
-        console.log('Socket closed');
-        console.log(`Waiting ${exitAfterFailure} seconds, then exiting`);
+        Logger.streams('Socket closed');
+        Logger.streams(
+            `Waiting ${exitAfterFailure} seconds, then exiting process`,
+        );
         setTimeout(() => {
             process.exit(1);
         }, exitAfterFailure * 1000);
@@ -56,12 +56,5 @@ export class SocketConnection {
 
     private msgIsAnOkay(data: any): boolean {
         return data?.event === 'phx_reply' && data?.payload?.status === 'ok';
-    }
-
-    private reportMsgCount(): void {
-        console.log(
-            `Streams - Over the last ${reportMsgCountInterval} seconds: ${this.msgCount} messages received`,
-        );
-        this.msgCount = 0;
     }
 }
