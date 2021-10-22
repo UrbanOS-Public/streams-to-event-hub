@@ -56,4 +56,8 @@ export class SocketConnection {
     private msgIsAnOkay(data: any): boolean {
         return data?.event === 'phx_reply' && data?.payload?.status === 'ok';
     }
+
+    public close(): void {
+        this.socket.close();
+    }
 }
