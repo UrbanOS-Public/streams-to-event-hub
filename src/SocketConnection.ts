@@ -21,19 +21,18 @@ export class SocketConnection {
         this.socket.on('message', (data) => this.onMessage(data));
 
         setInterval(() => {
-            this.socket.ping('keep alive msg');
+            this.socket.ping('keep alive');
         }, keepAliveInterval * 1000);
 
         setInterval(() => this.reportMsgCount(), reportMsgCountInterval * 1000);
-
-        console.log(
-            `Listening to messages on topic. Will print summary every ${reportMsgCountInterval} seconds`,
-        );
     }
 
     private onMessage(data: WebSocket.RawData): void {
         const msg = JSON.parse(data.toString());
-        if (this.msgIsAnOkay(msg)) console.log('Subscribed to topic: ok');
+        if (this.msgIsAnOkay(msg))
+            console.log(
+                `Subscribed to topic: ok\nWill print summary every ${reportMsgCountInterval} seconds`,
+            );
         else {
             this.msgCount++;
         }
