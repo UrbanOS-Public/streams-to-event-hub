@@ -1,7 +1,8 @@
-const default_streams_url = 'ws://localhost:4000/socket/websocket';
+export const summarizeStatsInterval = 20;
 
+const defaultStreamsURL = 'ws://localhost:4000/socket/websocket';
 export const getStreamsUrl = (): string =>
-    process.env['SOURCE_STREAMS_URL'] ?? default_streams_url;
+    process.env['SOURCE_STREAMS_URL'] ?? defaultStreamsURL;
 
 export const getEventHubUrl = (): string => {
     if (!process.env['EVENT_HUB_URL']) {

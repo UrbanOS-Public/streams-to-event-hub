@@ -23,3 +23,11 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: SOURCE_STREAMS_URL
+          value: {{ quote .Values.sourceStreamsUrl }}
+        - name: EVENT_HUB_URL
+          valueFrom:
+            secretKeyRef:
+              name: event-hub-url
+              key: event-hub-url
