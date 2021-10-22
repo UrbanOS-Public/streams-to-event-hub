@@ -4,6 +4,7 @@ import { getStreamsUrl, initial_topic_request } from './configuration';
 const options = { headers: { 'user-agent': 'node' } };
 const reportMsgCountInterval = 20; // seconds
 const keepAliveInterval = 5; // seconds
+const exitAfterFailure = 15; // seconds
 
 export class SocketConnection {
     private socket: WebSocket;
@@ -11,40 +12,36 @@ export class SocketConnection {
 
     constructor() {
         this.socket = new WebSocket(getStreamsUrl(), options);
+    }
 
-        this.socket.on('open', this.onConnection);
-        this.socket.on('message', this.onMessage);
-        this.socket.on('error', this.onError);
-        this.socket.on('close', this.onClose);
+    listen(): void {
+        this.socket.on('open', () => this.onConnection());
+        this.socket.on('close', () => this.onClose());
+        this.socket.on('error', (err) => this.onError(err));
+        this.socket.on('message', (data) => this.onMessage(data));
 
         setInterval(() => {
             this.socket.ping('keep alive msg');
         }, keepAliveInterval * 1000);
 
-        setInterval(this.reportMsgCount, this.reportMsgCountInterval * 1000);
-    }
+        setInterval(() => this.reportMsgCount(), reportMsgCountInterval * 1000);
 
-    private onConnection(): void {
-        console.log('Connection established, subscribing to topic');
-        this.socket.send(JSON.stringify(initial_topic_request));
+        console.log(
+            `Listening to messages on topic. Will print summary every ${reportMsgCountInterval} seconds`,
+        );
     }
 
     private onMessage(data: WebSocket.RawData): void {
-        if (this.msgIsAnOkay(data)) console.log('Subscribed to topic: ok');
+        const msg = JSON.parse(data.toString());
+        if (this.msgIsAnOkay(msg)) console.log('Subscribed to topic: ok');
         else {
             this.msgCount++;
         }
     }
 
-    private msgIsAnOkay(data: any): boolean {
-        return data?.event === 'phx_reply' && data?.payload?.status === 'ok';
-    }
-
-    private reportMsgCount(): void {
-        console.log(
-            `Received ${this.msgCount} in the last ${this.reportMsgCountInterval} seconds`,
-        );
-        this.msgCount = 0;
+    private onConnection(): void {
+        console.log('Connection established, subscribing to topic');
+        this.socket.send(JSON.stringify(initial_topic_request));
     }
 
     private onError(error: Error): void {
@@ -53,9 +50,20 @@ export class SocketConnection {
 
     private onClose(): void {
         console.log('Socket closed');
-        console.log('Waiting 20 seconds, then exiting.');
+        console.log(`Waiting ${exitAfterFailure} seconds, then exiting`);
         setTimeout(() => {
             process.exit(1);
-        }, 20000);
+        }, exitAfterFailure * 1000);
+    }
+
+    private msgIsAnOkay(data: any): boolean {
+        return data?.event === 'phx_reply' && data?.payload?.status === 'ok';
+    }
+
+    private reportMsgCount(): void {
+        console.log(
+            `Received ${this.msgCount} messages from streams in the last ${reportMsgCountInterval} seconds.`,
+        );
+        this.msgCount = 0;
     }
 }
