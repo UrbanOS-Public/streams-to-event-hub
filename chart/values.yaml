@@ -1,0 +1,19 @@
+image:
+    repository: smartcitiesdata/streams-to-event-hub
+    tag: latest
+    pullPolicy: Always
+
+replicaCount: 1
+
+resources:
+    limits:
+        memory: 512Mi
+        cpu: '1'
+    requests:
+        memory: 512Mi
+        cpu: '1'
+
+service:
+    name: streams-to-event-hub
+    port: 80
+    targetPort: 4000
