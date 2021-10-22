@@ -8,7 +8,6 @@ const exitAfterFailure = 15; // seconds
 
 export class SocketConnection {
     private socket: WebSocket;
-    private msgCount = 0;
     public msgCallback = async (msg: any): Promise<void> => Promise.resolve();
 
     constructor() {
