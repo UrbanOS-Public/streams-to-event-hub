@@ -6,5 +6,5 @@ module.exports = {
     testRegex: 'src/.*\\.test.ts$',
     coverageReporters: ['json', 'lcov', 'text'],
     reporters: ['default', ['jest-junit', { outputDirectory: 'jest_output' }]],
-    setupFiles: ['<rootDir>/src/test-utilities/mockEnvironmentSetup.ts'],
+    setupFiles: ['<rootDir>/src/test-utilities/jestEnvironmentSetup.ts'],
 };

@@ -5,15 +5,17 @@
 
 import { app } from './app';
 import waitForExpect from 'wait-for-expect';
-import { TestStreamsSocket } from './test-utilities/TestStreamsSocket';
+import { TestWsServerWrapper } from './test-utilities/TestWsServerWrapper';
 import { SocketConnection } from './SocketConnection';
-let mockStreams: TestStreamsSocket;
+let localWsServer: TestWsServerWrapper;
 
-const mockEventHub = { sendToEventHub: jest.fn() };
+const mockMessageCallback = jest.fn();
+const mockEventHub = { sendToEventHub: mockMessageCallback };
 jest.mock('./Logger', () => {
     return {
         Logger: {
             streams: jest.fn(),
+            streamsMsgReceived: jest.fn(),
             azure: jest.fn(),
             summarizeStats: jest.fn(),
         },
@@ -23,23 +25,28 @@ jest.mock('./Logger', () => {
 let socketConnection: SocketConnection;
 describe('The app', () => {
     beforeEach(() => {
-        mockStreams = new TestStreamsSocket();
+        localWsServer = new TestWsServerWrapper();
         socketConnection = new SocketConnection();
+        app(mockEventHub, socketConnection);
     });
 
     afterEach(async () => {
-        mockStreams.close();
+        localWsServer.close();
     });
 
-    it('Sends the topic request upon streams connection', async () => {
-        app(mockEventHub, socketConnection);
+    it('Sends the topic request to server upon streams connection', async () => {
         await waitForExpect(() => {
-            expect(mockStreams.receivedMessagesCount()).toBe(1);
+            expect(localWsServer.receivedMessagesCount()).toBe(1);
+            // expect(localWsServer.receivedMsgs[0]).toBe('slekrj');
         });
     });
-    it.todo(
-        'SocketConnection calls the msgCallback function upon receiving a message',
-    );
+
+    it('SocketConnection calls the msgCallback function upon receiving a message', async () => {
+        localWsServer.sendMessage();
+        await waitForExpect(() => {
+            expect(mockMessageCallback).toHaveBeenCalled();
+        });
+    });
     it.todo('A message is sent to EventHub when received');
 
     it.todo('A connection is made to SOURCE_STREAMS_URL env variable');

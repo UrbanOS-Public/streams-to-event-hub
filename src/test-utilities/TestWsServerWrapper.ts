@@ -2,26 +2,28 @@ import { WebSocketServer } from 'ws';
 
 const testPort = 1111;
 
-export class TestStreamsSocket {
+export class TestWsServerWrapper {
     private server: WebSocketServer;
-    private connectionMade = false;
-    private receivedMsgs = [] as any[];
+    public receivedMsgs = [] as any[];
 
     constructor() {
         this.server = new WebSocketServer({ port: testPort });
-        this.server.on('connection', (client) => {
-            this.connectionMade = true;
-            client.on('message', (data) => {
-                console.log('Client message received');
+        this.server.on('connection', (ws) => {
+            ws.on('message', (data) => {
                 const parsedMessage = JSON.parse(data.toString());
                 this.receivedMsgs.push(parsedMessage);
             });
+            ws.send('{"data":"hello"}');
         });
     }
 
     close(): void {
+        this.server.clients.forEach((ws) => ws.close());
         this.server.close();
-        console.log('closed');
+    }
+
+    sendMessage(): void {
+        this.server.clients.forEach((client) => client.send('{data: true}'));
     }
 
     receivedMessagesCount(): number {
