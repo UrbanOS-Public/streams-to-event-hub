@@ -6,39 +6,33 @@
 import { app } from './app';
 import waitForExpect from 'wait-for-expect';
 import { TestStreamsSocket } from './test-utilities/TestStreamsSocket';
-import mockedEnv, { RestoreFn } from 'mocked-env';
-
-const mockStreamsURL = 'ws://localhost:1111';
-const mockEventHubURL = 'mock-event-hub-url';
-let restoreEnvMock: RestoreFn;
+import { SocketConnection } from './SocketConnection';
 let mockStreams: TestStreamsSocket;
 
+const mockEventHub = { sendToEventHub: jest.fn() };
 jest.mock('./Logger', () => {
     return {
         Logger: {
-            streams: () => {},
-            azure: () => {},
-            summarizeStats: () => {},
+            streams: jest.fn(),
+            azure: jest.fn(),
+            summarizeStats: jest.fn(),
         },
     };
 });
 
+let socketConnection: SocketConnection;
 describe('The app', () => {
     beforeEach(() => {
-        restoreEnvMock = mockedEnv({
-            EVENT_HUB_URL: mockEventHubURL,
-            SOURCE_STREAMS_URL: mockStreamsURL,
-        });
         mockStreams = new TestStreamsSocket();
+        socketConnection = new SocketConnection();
     });
 
     afterEach(async () => {
-        restoreEnvMock();
         mockStreams.close();
     });
 
-    it.only('Sends the topic request upon streams connection', async () => {
-        app();
+    it('Sends the topic request upon streams connection', async () => {
+        app(mockEventHub, socketConnection);
         await waitForExpect(() => {
             expect(mockStreams.receivedMessagesCount()).toBe(1);
         });

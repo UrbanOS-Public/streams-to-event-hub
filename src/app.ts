@@ -3,10 +3,7 @@ import { EventHub } from './EventHub';
 import { Logger } from './Logger';
 import { summarizeStatsInterval } from './configuration';
 
-export const app = (): void => {
-    const eventHub = new EventHub();
-    const streams = new SocketConnection();
-
+export const app = (eventHub: EventHub, streams: SocketConnection): void => {
     streams.msgCallback = eventHub.sendToEventHub;
     streams.listen();
 

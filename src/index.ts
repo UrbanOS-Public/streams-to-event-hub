@@ -1,3 +1,5 @@
 import { app } from './app';
+import { EventHub } from './EventHub';
+import { SocketConnection } from './SocketConnection';
 
-app();
+app(new EventHub(), new SocketConnection());

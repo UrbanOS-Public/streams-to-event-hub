@@ -12,6 +12,7 @@ export class TestStreamsSocket {
         this.server.on('connection', (client) => {
             this.connectionMade = true;
             client.on('message', (data) => {
+                console.log('Client message received');
                 const parsedMessage = JSON.parse(data.toString());
                 this.receivedMsgs.push(parsedMessage);
             });
