@@ -1,7 +1,8 @@
 // Integration tests for making sure callbacks are called correctly.
 
 //  Calling them "integration" because traditional class level unit tests would
-//  just be testing the libraries themselves.
+//  just be testing the libraries themselves, and these instead check several
+// class connections to be sure callback interactions are wired correctly.
 
 import { app } from './app';
 import waitForExpect from 'wait-for-expect';
