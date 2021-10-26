@@ -17,3 +17,5 @@ service:
     name: streams-to-event-hub
     port: 80
     targetPort: 4000
+
+sourceStreamsUrl: 'ws://discovery-streams.urban-os/socket/websocket'

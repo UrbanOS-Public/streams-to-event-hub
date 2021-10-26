@@ -1,7 +1,5 @@
-import returnBen from './returnBen';
-import NumberGen from './NumberGen';
+import { app } from './app';
+import { EventHub } from './EventHub';
+import { SocketConnection } from './SocketConnection';
 
-const gen = new NumberGen();
-const val = gen.getNum();
-console.log(returnBen());
-console.log('getNum Value:', val);
+app(new EventHub(), new SocketConnection());
