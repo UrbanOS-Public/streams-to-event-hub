@@ -7,6 +7,7 @@ import { app } from './app';
 import waitForExpect from 'wait-for-expect';
 import { TestWsServerWrapper } from './test-utilities/TestWsServerWrapper';
 import { SocketConnection } from './SocketConnection';
+import { initial_topic_request } from './configuration';
 let localWsServer: TestWsServerWrapper;
 
 const mockMessageCallback = jest.fn();
@@ -37,7 +38,9 @@ describe('The app', () => {
     it('Sends the topic request to server upon streams connection', async () => {
         await waitForExpect(() => {
             expect(localWsServer.receivedMessagesCount()).toBe(1);
-            // expect(localWsServer.receivedMsgs[0]).toBe('slekrj');
+            expect(localWsServer.receivedMsgs[0]).toMatchObject(
+                initial_topic_request,
+            );
         });
     });
 
@@ -47,10 +50,4 @@ describe('The app', () => {
             expect(mockMessageCallback).toHaveBeenCalled();
         });
     });
-    it.todo('A message is sent to EventHub when received');
-
-    it.todo('A connection is made to SOURCE_STREAMS_URL env variable');
-    it.todo(
-        'An event hub connection is established to the EVENT_HUB_URL env variable',
-    );
 });
