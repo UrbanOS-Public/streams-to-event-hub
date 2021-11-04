@@ -10,6 +10,12 @@ A node microservice made to forward events from a websocket to Azure Event Hub.
 -   `SOURCE_STREAMS_URL` env var must be set: This is where the service will connect to. Default for local development is listed in configuration.ts
     -   For deployments this is set as a k8s secret
 
+## Deployment
+
+`deploy.sh` builds an image, pushes it, and deploys it to the cluster.
+
+Made to be run manually from your local machine.
+
 ## Notes
 
 A summary of messages received / successfully forwarded will be logged every 20
