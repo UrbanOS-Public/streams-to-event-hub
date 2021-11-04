@@ -10,8 +10,9 @@ export const getEventHubUrl = (): string => {
     } else return process.env['EVENT_HUB_URL'];
 };
 
+const topic = process.env['STREAMS_TOPIC'];
 export const initial_topic_request = {
-    topic: 'streaming:org__cve_data_oct21',
+    topic: topic,
     event: 'phx_join',
     payload: {},
     ref: '1',

@@ -19,3 +19,4 @@ service:
     targetPort: 4000
 
 sourceStreamsUrl: 'ws://discovery-streams.urban-os/socket/websocket'
+streamsTopic: 'streaming:org__cve_data_nov04'
