@@ -7,6 +7,7 @@
 import { app } from './app';
 import waitForExpect from 'wait-for-expect';
 import { TestWsServerWrapper } from './test-utilities/TestWsServerWrapper';
+import { mockTopic } from './test-utilities/jestEnvironmentSetup';
 import { SocketConnection } from './SocketConnection';
 import { initial_topic_request } from './configuration';
 let localWsServer: TestWsServerWrapper;
@@ -25,6 +26,7 @@ jest.mock('./Logger', () => {
 });
 
 let socketConnection: SocketConnection;
+
 describe('The app', () => {
     beforeEach(() => {
         localWsServer = new TestWsServerWrapper();
@@ -39,9 +41,10 @@ describe('The app', () => {
     it('Sends the topic request to server upon streams connection', async () => {
         await waitForExpect(() => {
             expect(localWsServer.receivedMessagesCount()).toBe(1);
-            expect(localWsServer.receivedMsgs[0]).toMatchObject(
-                initial_topic_request,
-            );
+            expect(localWsServer.receivedMsgs[0]).toMatchObject({
+                ...initial_topic_request,
+                topic: mockTopic,
+            });
         });
     });
 
