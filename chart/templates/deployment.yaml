@@ -32,4 +32,4 @@ spec:
               name: event-hub-url
               key: event-hub-url
         - name: STREAMS_TOPIC
-          VALUE: {{ quote .Values.streamsTopic }}
+          value: {{ quote .Values.streamsTopic }}
