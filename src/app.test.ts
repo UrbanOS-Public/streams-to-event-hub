@@ -12,8 +12,8 @@ import { SocketConnection } from './SocketConnection';
 import { initial_topic_request } from './configuration';
 let localWsServer: TestWsServerWrapper;
 
-const mockMessageCallback = jest.fn();
-const mockEventHub = { sendToEventHub: mockMessageCallback };
+let mockSendToEventHub = jest.fn();
+
 jest.mock('./Logger', () => {
     return {
         Logger: {
@@ -29,6 +29,8 @@ let socketConnection: SocketConnection;
 
 describe('The app', () => {
     beforeEach(() => {
+        mockSendToEventHub = jest.fn();
+        const mockEventHub = { sendToEventHub: mockSendToEventHub };
         localWsServer = new TestWsServerWrapper();
         socketConnection = new SocketConnection();
         app(mockEventHub, socketConnection);
@@ -40,6 +42,7 @@ describe('The app', () => {
 
     it('Sends the topic request to server upon streams connection', async () => {
         await waitForExpect(() => {
+            expect(localWsServer.clientConnected()).toBeTruthy();
             expect(localWsServer.receivedMessagesCount()).toBe(1);
             expect(localWsServer.receivedMsgs[0]).toMatchObject({
                 ...initial_topic_request,
@@ -48,10 +51,19 @@ describe('The app', () => {
         });
     });
 
-    it('SocketConnection calls the msgCallback function upon receiving a message', async () => {
-        localWsServer.sendMessage();
-        await waitForExpect(() => {
-            expect(mockMessageCallback).toHaveBeenCalled();
+    it('SocketConnection *DOES* call the msgCallback function if shouldForward is true', async () => {
+        await waitForExpect(async () => {
+            expect(localWsServer.clientConnected()).toBeTruthy();
+            localWsServer.sendMessageToForward();
+            expect(mockSendToEventHub).toHaveBeenCalled();
+        });
+    });
+
+    it('SocketConnection does *NOT* call the msgCallback function if shouldForward is false', async () => {
+        await waitForExpect(async () => {
+            expect(localWsServer.clientConnected()).toBeTruthy();
+            localWsServer.sendMessageNotToForward();
+            expect(mockSendToEventHub).not.toHaveBeenCalled();
         });
     });
 });
