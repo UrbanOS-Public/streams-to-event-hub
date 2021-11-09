@@ -10,6 +10,10 @@ export const getEventHubUrl = (): string => {
     } else return process.env['EVENT_HUB_URL'];
 };
 
+const shouldForwardAttribute = 'is_crashed';
+export const shouldForward = (message: any): boolean =>
+    message[shouldForwardAttribute] === true;
+
 const topic = process.env['STREAMS_TOPIC'];
 export const initial_topic_request = {
     topic: topic,

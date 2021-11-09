@@ -4,7 +4,6 @@ import { Logger } from './Logger';
 
 const eventHubName = 'urban-os';
 const producer = new EventHubProducerClient(getEventHubUrl(), eventHubName);
-
 export class EventHub {
     public sendToEventHub = async (msg: any): Promise<void> => {
         Logger.azureSendAttempt();
