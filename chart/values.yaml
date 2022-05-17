@@ -1,5 +1,5 @@
 image:
-    repository: smartcitiesdata/streams-to-event-hub
+    repository: micnotppasacr01.azurecr.io/streams-to-event-hub
     tag: latest
     pullPolicy: Always
 
