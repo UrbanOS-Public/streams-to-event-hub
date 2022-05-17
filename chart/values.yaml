@@ -1,5 +1,5 @@
 image:
-    repository: smartcitiesdata/streams-to-event-hub
+    repository: micnotppasacr01.azurecr.io/streams-to-event-hub
     tag: latest
     pullPolicy: Always
 
@@ -19,4 +19,4 @@ service:
     targetPort: 4000
 
 sourceStreamsUrl: 'ws://discovery-streams.urban-os/socket/websocket'
-streamsTopic: 'streaming:org__cve_data_nov08_2'
+streamsTopic: 'streaming:ben_andi_org_may17_22__cve_may17_2022_two'
