@@ -2,6 +2,9 @@
 
 A node microservice made to forward events from a websocket to Azure Event Hub.
 
+Used with demos of UrbanOS to show how data from our system can be ingested
+in realtime, and sent to any variety of places, like Azure Event Hub.
+
 ## Setup
 
 -   `npm i` to install deps
@@ -9,7 +12,7 @@ A node microservice made to forward events from a websocket to Azure Event Hub.
 -   The `EVENT_HUB_URL` env var must be set. This is where the service will attempt to send events to. No default.
     -   For deployments this is set as a k8s secret
 -   `SOURCE_STREAMS_URL` env var must be set: This is where the service will connect to. Default for local development is listed in configuration.ts
-    -   For deployments this is set in the values.yml 
+    -   For deployments this is set in the values.yml
 
 ## Deployment
 
