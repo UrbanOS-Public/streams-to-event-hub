@@ -18,5 +18,5 @@ service:
     port: 80
     targetPort: 4000
 
-sourceStreamsUrl: 'wss://streams.demo-urban-os.com/socket/websocket'
-streamsTopic: 'streaming:traffic_center__connected_vehicle_live_data'
+sourceStreamsUrl: ''
+streamsTopic: ''

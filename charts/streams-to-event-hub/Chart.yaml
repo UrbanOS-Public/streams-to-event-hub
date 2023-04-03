@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Forward events from a websocket to event hub
 name: streams-to-event-hub
-version: 0.0.2
+version: 0.0.3
