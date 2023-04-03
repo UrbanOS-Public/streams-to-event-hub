@@ -1,9 +1,0 @@
-.idea
-
-node_modules
-dist
-
-coverage
-jest_output
-
-.DS_Store
