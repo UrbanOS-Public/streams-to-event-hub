@@ -7,9 +7,9 @@
 import { app } from './app';
 import waitForExpect from 'wait-for-expect';
 import { TestWsServerWrapper } from './test-utilities/TestWsServerWrapper';
-import { mockTopic } from './test-utilities/jestEnvironmentSetup';
+import { mockTopic, mockApiKey } from './test-utilities/jestEnvironmentSetup';
 import { SocketConnection } from './SocketConnection';
-import { initial_topic_request } from './configuration';
+import { getInitialTopicRequest } from './configuration';
 let localWsServer: TestWsServerWrapper;
 
 let mockSendToEventHub = jest.fn();
@@ -45,8 +45,9 @@ describe('The app', () => {
             expect(localWsServer.clientConnected()).toBeTruthy();
             expect(localWsServer.receivedMessagesCount()).toBe(1);
             expect(localWsServer.receivedMsgs[0]).toMatchObject({
-                ...initial_topic_request,
+                ...getInitialTopicRequest(),
                 topic: mockTopic,
+                payload: { api_key: mockApiKey },
             });
         });
     });

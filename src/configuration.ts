@@ -14,11 +14,9 @@ const shouldForwardAttribute = 'is_crashed';
 export const shouldForward = (message: any): boolean =>
     message[shouldForwardAttribute] === true;
 
-const topic = process.env['STREAMS_TOPIC'];
-export const initial_topic_request = {
-    topic: topic,
+export const getInitialTopicRequest = () => ({
+    topic: process.env['STREAMS_TOPIC'],
     event: 'phx_join',
-    payload: {},
+    payload: { api_key: process.env['STREAMS_API_KEY'] },
     ref: '1',
-    api_key: process.env['STREAMS_API_KEY'] ?? null,
-};
+});

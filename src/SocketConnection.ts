@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { getStreamsUrl, initial_topic_request } from './configuration';
+import { getStreamsUrl, getInitialTopicRequest } from './configuration';
 import { Logger } from './Logger';
 
 const options = { headers: { 'user-agent': 'node' } };
@@ -36,7 +36,8 @@ export class SocketConnection {
 
     private onConnection(): void {
         Logger.streams('Connection established: subscribing to topic');
-        this.socket.send(JSON.stringify(initial_topic_request));
+        const req = JSON.stringify(getInitialTopicRequest());
+        this.socket.send(req);
     }
 
     private onError(error: Error): void {
