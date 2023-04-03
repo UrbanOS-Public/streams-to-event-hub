@@ -20,5 +20,5 @@ export const initial_topic_request = {
     event: 'phx_join',
     payload: {},
     ref: '1',
-    api_key: process.env['STREAMS_API_KEY'] ?? null
+    api_key: process.env['STREAMS_API_KEY'] ?? null,
 };
