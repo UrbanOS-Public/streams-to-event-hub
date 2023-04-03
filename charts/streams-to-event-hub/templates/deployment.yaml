@@ -34,7 +34,7 @@ spec:
         - name: STREAMS_API_KEY
           valueFrom:
             secretKeyRef:
-              name: streams_api_key
-              key: streams_api_key
+              name: streams-api-key
+              key: streams-api-key
         - name: STREAMS_TOPIC
           value: {{ quote .Values.streamsTopic }}
