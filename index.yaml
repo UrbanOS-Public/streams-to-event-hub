@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   streams-to-event-hub:
   - apiVersion: v1
+    created: "2023-04-03T20:53:08.35802423Z"
+    description: Forward events from a websocket to event hub
+    digest: d94db4ab955fe6b7d82f9f65b2e7b02f2c0410f6130e89077727abaf7c13e9dc
+    name: streams-to-event-hub
+    urls:
+    - https://github.com/UrbanOS-Public/streams-to-event-hub/releases/download/streams-to-event-hub-0.0.6/streams-to-event-hub-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v1
     created: "2023-04-03T20:19:23.072948363Z"
     description: Forward events from a websocket to event hub
     digest: 084595437c522eff6e0e91f52ed826182a0cbaf853847303652be03b81611df9
@@ -41,4 +49,4 @@ entries:
     urls:
     - https://github.com/UrbanOS-Public/streams-to-event-hub/releases/download/streams-to-event-hub-0.0.1/streams-to-event-hub-0.0.1.tgz
     version: 0.0.1
-generated: "2023-04-03T20:19:23.072974163Z"
+generated: "2023-04-03T20:53:08.35804173Z"
