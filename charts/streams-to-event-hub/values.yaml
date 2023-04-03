@@ -1,5 +1,5 @@
 image:
-    repository: micnotppasacr01.azurecr.io/streams-to-event-hub
+    repository: smartcitiesdata/streams-to-event-hub
     tag: latest
     pullPolicy: Always
 
@@ -7,16 +7,16 @@ replicaCount: 1
 
 resources:
     limits:
-        memory: 512Mi
-        cpu: '1'
+        memory: 400M
+        cpu: 400m
     requests:
-        memory: 512Mi
-        cpu: '1'
+        memory: 400M
+        cpu: 400m
 
 service:
     name: streams-to-event-hub
     port: 80
     targetPort: 4000
 
-sourceStreamsUrl: 'ws://discovery-streams.urban-os/socket/websocket'
-streamsTopic: 'streaming:ben_andi_org_may17_22__cve_may17_2022_two'
+sourceStreamsUrl: 'wss://streams.demo-urban-os.com/socket/websocket'
+streamsTopic: 'streaming:traffic_center__connected_vehicle_live_data'
