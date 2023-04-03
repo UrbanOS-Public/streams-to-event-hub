@@ -31,5 +31,10 @@ spec:
             secretKeyRef:
               name: event-hub-url
               key: event-hub-url
+        - name: STREAMS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: streams_api_key
+              key: streams_api_key
         - name: STREAMS_TOPIC
           value: {{ quote .Values.streamsTopic }}

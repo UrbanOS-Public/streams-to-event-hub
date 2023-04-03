@@ -21,8 +21,15 @@ jobs:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+            - name: Run read-yaml action
+              id: image-and-chart-version
+              uses: jbutcher5/read-yaml@1.6
+              with:
+                  file: './charts/streams-to-event-hub/values.yaml'
+                  key-path: '["image", "tag"]'
+
             - name: Build and push
               uses: docker/build-push-action@v4
               with:
                   push: true
-                  tags: smartcitiesdata/streams-to-event-hub:latest
+                  tags: smartcitiesdata/streams-to-event-hub:${{ steps.image-and-chart-version.outputs.data }}

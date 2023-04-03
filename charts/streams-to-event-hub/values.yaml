@@ -1,6 +1,7 @@
 image:
     repository: smartcitiesdata/streams-to-event-hub
-    tag: latest
+    tag: 0.0.4 # increment this value when making chart changes, a new docker
+    # image at this tag will then be published.
     pullPolicy: Always
 
 replicaCount: 1
