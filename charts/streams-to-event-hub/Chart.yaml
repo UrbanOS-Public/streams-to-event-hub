@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Forward events from a websocket to event hub
 name: streams-to-event-hub
-version: 0.0.6 # change image in values.yaml when this is changed
+version: 0.0.7 # change image in values.yaml when this is changed

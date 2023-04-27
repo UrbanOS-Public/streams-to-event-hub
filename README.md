@@ -20,6 +20,12 @@ in realtime, and sent to any variety of places, like Azure Event Hub.
 
 Made to be run manually from your local machine.
 
+## Making changes
+
+-   Made code changes
+-   Up version in chart and values yaml
+-   New image and chart will be pushed up afterwards
+
 ## Notes
 
 A summary of messages received / successfully forwarded will be logged every 20

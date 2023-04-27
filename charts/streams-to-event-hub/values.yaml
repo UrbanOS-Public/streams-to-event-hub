@@ -1,6 +1,6 @@
 image:
     repository: smartcitiesdata/streams-to-event-hub
-    tag: 0.0.6 # increment this value when making chart changes, a new docker
+    tag: 0.0.7 # increment this value when making chart changes, a new docker
     # image at this tag will then be published. Also change in Chart.yaml to
     # keep in lockstep.
     pullPolicy: Always

@@ -2,7 +2,10 @@ import WebSocket from 'ws';
 import { getStreamsUrl, getInitialTopicRequest } from './configuration';
 import { Logger } from './Logger';
 
-const options = { headers: { 'user-agent': 'node' } };
+const options = {
+    headers: { 'user-agent': 'node' },
+    rejectUnauthorized: false,
+};
 const keepAliveInterval = 5; // seconds
 const exitAfterFailure = 15; // seconds
 
